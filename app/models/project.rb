@@ -1,3 +1,3 @@
 class Project < ApplicationRecord
-  validates :name true
+  validates :name, presence: true
 end

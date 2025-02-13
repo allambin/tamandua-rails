@@ -1,11 +1,11 @@
 class ProjectsController < ApplicationController
   before_action :set_project, only: %i[ show update destroy ]
+  before_action :authenticate_request, only: %i[ show create update destroy ]
 
   # GET /projects
   def index
     @projects = Project.all
-
-    render json: @projects
+    render json: @projects, adapter: :json, each_serializer: ProjectSerializer
   end
 
   # GET /projects/1

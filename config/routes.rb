@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :tasks
   resources :users
   resources :projects
   post "auth/login", to: "authentication#login"
