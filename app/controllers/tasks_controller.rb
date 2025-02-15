@@ -16,9 +16,12 @@ class TasksController < ApplicationController
 
   # POST /tasks
   def create
-    task = TaskService.create_task(task_params)
+    task = TaskService.create_task(task_params, @current_user)
     render json: task, status: :created
   rescue StandardError => e
+    # Rails.logger.error("Task creation failed: #{e.message}\n#{e.backtrace.join("\n")}")
+    # Rails.logger.debug("Task Params: #{task_params.inspect}")
+    # Rails.logger.debug("Current User: #{@current_user.inspect}")
     render json: { error: e.message }, status: :unprocessable_entity
   end
 
@@ -44,6 +47,6 @@ class TasksController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def task_params
-      params.fetch(:task, {})
+      params.require(:task).permit(:title, :due_date, :project_id, :assignee_id, :status)
     end
 end
